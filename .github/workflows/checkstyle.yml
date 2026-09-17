@@ -1,0 +1,28 @@
+name: Coding Checkstyle Review
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  checkstyle:
+    name: Checkstyle
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v7
+
+      - name: Set up a JDK to run Checkstyle
+        uses: actions/setup-java@v6
+        with:
+          distribution: zulu
+          java-version: '25'
+
+      - name: Download Checkstyle 14.1.0
+        run: >
+          curl -sSL -o checkstyle.jar
+          https://github.com/checkstyle/checkstyle/releases/download/checkstyle-14.1.0/checkstyle-14.1.0-all.jar
+
+      - name: Run Checkstyle against every .java file
+        run: java -jar checkstyle.jar -c checkstyle.xml src
