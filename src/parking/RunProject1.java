@@ -1,3 +1,5 @@
+package parking;
+
 /**
  * The driver class to execute Project 1.
  * This class contains the main method which instantiates the
