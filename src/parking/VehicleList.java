@@ -132,6 +132,16 @@ public class VehicleList {
     }
 
     /**
+     * Returns whether the list has no registered vehicles, so the user
+     * interface can report an empty list instead of printing nothing.
+     *
+     * @return true if no vehicles are registered
+     */
+    public boolean isEmpty() {
+        return numVehicles == 0;
+    }
+
+    /**
      * Looks up the registered vehicle with the given license plate.
      * This overloads {@link #find(Vehicle)} so that a caller who
      * only has a plate string (for example, from user input) can
