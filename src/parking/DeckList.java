@@ -105,7 +105,7 @@ public class DeckList {
      */
     public void printByLocation() {
         sortByCounty();
-        for (int i = 0; i < numDecks; i++){
+        for (int i = 0; i < numDecks; i++) {
             System.out.println(decks[i].toString());
         }
     }
@@ -117,14 +117,14 @@ public class DeckList {
      */
     private void sortByCounty() {
         for (int i = 1; i < this.numDecks; i++) {
-            String key = decks[i].getCounty();
-            Deck deckKey = decks[i];
+            Deck key = decks[i];
+            String county = decks[i].getCounty();
             int j = i - 1;
-            while (j >= 0 && decks[j].getCounty().compareTo(key) > 0) {
+            while (j >= 0 && decks[j].getCounty().compareTo(county) > 0) {
                 decks[j + 1] = decks[j];
                 j--;
             }
-            decks[j + 1] = deckKey;
+            decks[j + 1] = key;
         }
         sortByDeck();
     }
@@ -145,14 +145,14 @@ public class DeckList {
 
             int i = start + 1;
             while (i < end) {
-                int key = decks[i].getDeckNumber();
-                Deck deckKey = decks[i];
+                Deck key = decks[i];
+                int deckNumber = decks[i].getDeckNumber();
                 int j = i - 1;
-                while (j >= start && decks[j].getDeckNumber() > key) {
+                while (j >= start && decks[j].getDeckNumber() > deckNumber) {
                     decks[j + 1] = decks[j];
                     j--;
                 }
-                decks[j + 1] = deckKey;
+                decks[j + 1] = key;
                 i++;
             }
 
@@ -167,7 +167,7 @@ public class DeckList {
      *
      * @param deck Deck object
      */
-    public void printVehicles(Deck deck){
+    public void printVehicles(Deck deck) {
         int index = find(deck);
         sortByPlate(decks[index]);
         Parking[] p = deck.getParkings();
@@ -186,13 +186,14 @@ public class DeckList {
     private void sortByPlate(Deck deck) {
         Parking[] p = deck.getParkings();
         for (int i = 1; i < deck.getNumParked(); i++) {
-            String key = p[i].getVehicle().plate();
+            Parking key = p[i];
+            String plate = key.getVehicle().plate();
             int j = i - 1;
-            while (j >= 0 && p[j].getVehicle().plate().compareTo(key) > 0 ) {
+            while (j >= 0 && p[j].getVehicle().plate().compareTo(plate) > 0) {
                 p[j + 1] = p[j];
                 j--;
             }
-            p[j + 1] = p[i];
+            p[j + 1] = key;
         }
     }
 

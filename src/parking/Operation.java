@@ -1,4 +1,5 @@
 package parking;
+
 import java.util.Scanner;
 
 /**
@@ -10,9 +11,9 @@ import java.util.Scanner;
  */
 
 public class Operation {
+    private final String SEPARATOR = "\\s+";
     private DeckList deckList;
     private VehicleList vehicleList;
-    private final String SEPARATOR = "\\s+";
 
     /**
      * Default constructor for Operation class.
@@ -35,24 +36,34 @@ public class Operation {
         while (!command.equals("Q")) {
             command = scan.nextLine();
             int commandLength = command.length();
-            if (commandLength == 0) { continue; }
+            if (commandLength == 0) {
+                continue;
+            }
             switch (command.charAt(0)) {
                 case 'A':
-                    System.out.println(commandA(command.substring(2, commandLength))); break;
+                    System.out.println(commandA(command.substring(2, commandLength)));
+                    break;
                 case 'R':
-                    System.out.println(commandR(command.substring(2, commandLength))); break;
+                    System.out.println(commandR(command.substring(2, commandLength)));
+                    break;
                 case 'O':
-                    System.out.println(commandO(command.substring(2, commandLength))); break;
+                    System.out.println(commandO(command.substring(2, commandLength)));
+                    break;
                 case 'C':
-                    System.out.println(commandC(command.substring(2, commandLength))); break;
+                    System.out.println(commandC(command.substring(2, commandLength)));
+                    break;
                 case 'E':
-                    System.out.println(commandE(command.substring(2, commandLength))); break;
+                    System.out.println(commandE(command.substring(2, commandLength)));
+                    break;
                 case 'X':
-                    System.out.println(commandX(command.substring(2, commandLength))); break;
+                    System.out.println(commandX(command.substring(2, commandLength)));
+                    break;
                 case 'P':
-                    commandP(command); break;
+                    commandP(command);
+                    break;
                 case 'Q':
-                    System.out.println("Parking Management System is terminated."); break;
+                    System.out.println("Parking Management System is terminated.");
+                    break;
                 default:
                     System.out.println(command + " is an invalid command!");
             }
@@ -77,8 +88,7 @@ public class Operation {
                 vehicleList.add(vehicle);
                 return tokens + " registered.";
             }
-        }
-        else {
+        } else {
             return tokens + " - invalid license plate format.";
         }
     }
@@ -107,8 +117,7 @@ public class Operation {
             Vehicle vehicle = vehicleList.find(tokens);
             vehicleList.remove(vehicle);
             return tokens + " unregistered.";
-        }
-        else {
+        } else {
             return tokens + " - invalid license plate format.";
         }
     }
@@ -196,10 +205,18 @@ public class Operation {
         if (deckInfo.length < 4) {
             return "Error opening Deck#" + deckInfo[0] + " - missing data tokens.";
         } else {
-            if (!isNumeric(deckInfo[3])) { return deckInfo[3] + " - invalid capacity; it's not an integer."; }
-            if (Integer.parseInt(deckInfo[3]) > 6) { return deckInfo[3] + " - exceeds the maximum deck capacity 6"; }
-            if (!isValidLocation(deckInfo[1])) { return deckInfo[1] + " - invalid location."; }
-            if (!areValidHours(deckInfo[2])) { return deckInfo[2] + " - invalid operation hours"; }
+            if (!isNumeric(deckInfo[3])) {
+                return deckInfo[3] + " - invalid capacity; it's not an integer.";
+            }
+            if (Integer.parseInt(deckInfo[3]) > 6) {
+                return deckInfo[3] + " - exceeds the maximum deck capacity 6";
+            }
+            if (!isValidLocation(deckInfo[1])) {
+                return deckInfo[1] + " - invalid location.";
+            }
+            if (!areValidHours(deckInfo[2])) {
+                return deckInfo[2] + " - invalid operation hours";
+            }
 
             return openDeck(deckInfo);
         }
@@ -264,7 +281,7 @@ public class Operation {
      * @return true if String matches one of Location's values
      */
     private boolean isValidLocation(String location) {
-        for (Location loc: Location.values()) {
+        for (Location loc : Location.values()) {
             if (loc.name().equalsIgnoreCase(location)) {
                 return true;
             }
@@ -288,7 +305,7 @@ public class Operation {
         int deckNumber = Integer.parseInt(tokens.trim());
         Deck deck = deckList.getDeck(deckNumber);
         if (deckList.getDeck(deckNumber) == null) {
-           return "Deck#" + deckNumber + " - does not exist.";
+            return "Deck#" + deckNumber + " - does not exist.";
         }
 
         if (!deck.isOpen()) {
@@ -340,8 +357,8 @@ public class Operation {
         Timestamp entered = new Timestamp(enterDate, vehicleInfo[3]);
         parking.setEnter(entered);
         deck.enter(parking);
-        return vehicleInfo[1] + " entered Deck#" + deckNumber  +
-                " on " + entered.toString();
+        return vehicleInfo[1] + " entered Deck#" + deckNumber +
+                " on " + entered;
     }
 
     /**
@@ -388,7 +405,7 @@ public class Operation {
      * if any three of those are invalid. Calls a second method to check the
      * Timestamp object against the deck's operating hours.
      *
-     * @param deck the Deck object passed to the second method
+     * @param deck      the Deck object passed to the second method
      * @param enterDate String to be converted to a Date object
      * @param enterTime String to be broken into hours and minutes
      * @return "" if all validation is passed
@@ -419,10 +436,10 @@ public class Operation {
 
     /**
      * Validates that the vehicle's enter timestamp is within
-     * the chosen deck's operating hours. Will return a String to be printed
-     * to the command-line if not.
+     * the chosen deck's operating hours. Will return a non-empty String
+     * if validation fails.
      *
-     * @param deck Deck object to retrieve operating hours from
+     * @param deck      Deck object to retrieve operating hours from
      * @param timestamp the initialized timestamp
      * @return "" if timestamp is within the operating hours
      */
@@ -455,7 +472,7 @@ public class Operation {
      * @param tokens String containing remaining tokens for validation
      * @return String to be printed to the commmand-line
      */
-    private String commandX (String tokens) {
+    private String commandX(String tokens) {
         String[] vehicleInfo = tokens.split(SEPARATOR);
 
         if (!Vehicle.isValidPlate(vehicleInfo[0])) {
@@ -475,14 +492,16 @@ public class Operation {
         }
 
         Vehicle vehicle = vehicleList.find(plate);
-        Parking parking = new Parking(vehicle);
+        Parking parking = deck.getParking(vehicle);
         Date date = getDate(exitDate);
         Timestamp exited = new Timestamp(date, exitTime);
         parking.setExit(exited);
         deck.exit(parking);
+
         vehicle.addHistory(parking);
+
         return plate + " exited Deck#" + deck.getDeckNumber() +
-                " on " + exited.toString();
+                " on " + exited;
     }
 
     /**
@@ -516,10 +535,10 @@ public class Operation {
      * a second method that validates the exit timestamp
      * against the deck's operating hours.
      *
-     * @param deck Deck object to pass to second method
+     * @param deck     Deck object to pass to second method
      * @param exitDate String representation of the date
      * @param exitTime String representation of the time
-     * @param plate String representation of the vehicle's license plate
+     * @param plate    String representation of the vehicle's license plate
      * @return "" if validation checks pass
      */
     private String validateExitDateTime(Deck deck, String exitDate, String exitTime, String plate) {
@@ -549,11 +568,12 @@ public class Operation {
     /**
      * Validates that the given time is within the deck's operating hours,
      * greater than the vehicle's entered time, and doesn't exceed two days
-     * from when the vehicle entered the deck.
+     * from when the vehicle entered the deck. Checks if exit timestamp
+     * exceeds 2 days from enter timestamp by comparing their epoch seconds.
      *
-     * @param deck Deck object to retrieve operating hours from
+     * @param deck      Deck object to retrieve operating hours from
      * @param timestamp Timestamp object to validate
-     * @param plate String representation of the license plate
+     * @param plate     String representation of the license plate
      * @return "" if all validation passes
      */
     private String validateExitHours(Deck deck, Timestamp timestamp, String plate) {
@@ -578,11 +598,12 @@ public class Operation {
         Timestamp entered = parking.getEnter();
 
         if (timestamp.compareTo(entered) < 0) {
-            return "Exiting time " + timestamp.toString() +
-                    " before entering time " + entered.toString();
+            return "Exiting time " + timestamp +
+                    " before entering time " + entered;
         }
 
-        if (date.getDay() - entered.getDate().getDay() > 2) {
+        long dayDifference = timestamp.epochSeconds() - entered.epochSeconds();
+        if (dayDifference > 172800) {
             return "Invalid exiting time - exceeds two days.";
         }
 
@@ -607,7 +628,6 @@ public class Operation {
         }
     }
 
-
     /**
      * Prints the entire list of vehicles registered in the system.
      */
@@ -619,7 +639,6 @@ public class Operation {
             vehicleList.printByPlate();
             System.out.println("** end of list **");
         }
-
     }
 
     /**
@@ -655,7 +674,6 @@ public class Operation {
                 deckList.printByLocation();
                 System.out.println("** end of list **");
             }
-
         }
     }
 
@@ -670,23 +688,23 @@ public class Operation {
     private void displayHistory(String tokens) {
         String[] vehicleTokens = tokens.split(SEPARATOR);
         if (vehicleTokens.length == 2) {
-          if (!Vehicle.isValidPlate(vehicleTokens[1])) {
-              System.out.println(vehicleTokens[1] + " - invalid license plate format.");
-              return;
-          }
-          String plate = vehicleTokens[1];
-          Vehicle vehicle = vehicleList.find(plate);
-          if (vehicle != null) {
-              if (vehicle.hasHistory()) {
-                  System.out.println("** Parking history for " + plate + "**");
-                  vehicle.printHistory();
-                  System.out.println("** end of list **");
-              } else {
-                  System.out.println(plate + " - no parking history.");
-              }
-          } else {
-              System.out.println(plate + " does not exist.");
-          }
+            if (!Vehicle.isValidPlate(vehicleTokens[1])) {
+                System.out.println(vehicleTokens[1] + " - invalid license plate format.");
+                return;
+            }
+            String plate = vehicleTokens[1];
+            Vehicle vehicle = vehicleList.find(plate);
+            if (vehicle != null) {
+                if (vehicle.hasHistory()) {
+                    System.out.println("** Parking history for " + plate + "**");
+                    vehicle.printHistory();
+                    System.out.println("** end of list **");
+                } else {
+                    System.out.println(plate + " - no parking history.");
+                }
+            } else {
+                System.out.println(plate + " does not exist.");
+            }
         } else {
             if (deckList.getNumDecks() == 0) {
                 System.out.println("Deck list is empty - no deck is open.");

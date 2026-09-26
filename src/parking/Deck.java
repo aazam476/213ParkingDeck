@@ -20,10 +20,10 @@ public class Deck {
     /**
      * Param constructor for Deck that initializes its parkings array
      *
-     * @param number deck number
+     * @param number   deck number
      * @param capacity maximum number of vehicles that can park
      * @param location enum value from Location
-     * @param hour enum value from Hour
+     * @param hour     enum value from Hour
      */
     public Deck(int number, int capacity, Location location, Hour hour) {
         this.number = number;
@@ -73,7 +73,7 @@ public class Deck {
      */
     public void exit(Parking parking) {
         int vehicleIndex = find(parking.getVehicle());
-        if (vehicleIndex != -1)  {
+        if (vehicleIndex != -1) {
             parkings[vehicleIndex] = null;
             int validIndex = 0;
             for (int i = 0; i < this.numParked; i++) {
@@ -131,35 +131,45 @@ public class Deck {
      *
      * @return int value of capacity
      */
-    public int getCapacity() { return parkings.length; }
+    public int getCapacity() {
+        return parkings.length;
+    }
 
     /**
      * Get the county the deck's location belongs to
      *
      * @return String representation of the county
      */
-    public String getCounty() { return this.location.getCounty(); }
+    public String getCounty() {
+        return this.location.getCounty();
+    }
 
     /**
      * Get the Hour object belonging to the deck
      *
      * @return Hour representation of the 3-character timeframe
      */
-    public Hour getHour() { return this.hour; }
+    public Hour getHour() {
+        return this.hour;
+    }
 
     /**
      * Get the deck's starting hours
      *
      * @return String representation of initial operating hours
      */
-    public String getStartHours() { return this.hour.getStart(); }
+    public String getStartHours() {
+        return this.hour.getStart();
+    }
 
     /**
      * Get the deck's closing hours
      *
      * @return String represnation of closed operating hours
      */
-    public String getEndHours() { return this.hour.getEnd(); }
+    public String getEndHours() {
+        return this.hour.getEnd();
+    }
 
     /**
      * Check if the deck currently has any vehicles parked.
@@ -205,7 +215,7 @@ public class Deck {
      * Overrides the equals() method to check if two deck objects
      * have the same deck number
      *
-     * @param obj   the reference object with which to compare.
+     * @param obj the reference object with which to compare.
      * @return true if deck numbers are equal
      */
     @Override

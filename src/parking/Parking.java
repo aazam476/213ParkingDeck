@@ -51,13 +51,17 @@ public class Parking {
 
     /**
      * Getter method for the parking activity's enter timestamp
+     *
+     * @return Timestamp object
      */
     public Timestamp getEnter() {
         return this.enter;
     }
 
     /**
-     * Getter method for the parking activity's enter timestamp
+     * Getter method for the parking activity's enter timestamp\
+     *
+     * @return Timestamp object
      */
     public Timestamp getExit() {
         return this.exit;
