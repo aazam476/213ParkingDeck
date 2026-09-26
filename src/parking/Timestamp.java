@@ -1,10 +1,12 @@
 package parking;
 
+import java.util.Calendar;
+
 /**
  * A point in time for a parking activity, made up of a calendar date and
  * an hour and minute in 24-hour format.
- * A Timestamp can check whether it is valid and compare itself to other
- * timestamps chronologically.
+ * A Timestamp can check whether it is valid, compare itself to other
+ * timestamps chronologically, and convert itself to epoch time.
  *
  * @author Ali Azam
  */
@@ -20,6 +22,15 @@ public class Timestamp implements Comparable<Timestamp> {
 
     /** The latest valid minute. */
     private static final int MAX_MINUTE = 59;
+
+    /** The number of milliseconds in one second. */
+    private static final int MILLIS_PER_SECOND = 1000;
+
+    /**
+     * Difference between a month number and the month numbering used by
+     * the Calendar class, where January is 0.
+     */
+    private static final int CALENDAR_MONTH_OFFSET = 1;
 
     /** The character between the hour and minute in a time string. */
     private static final String SEPARATOR = ":";
@@ -147,6 +158,24 @@ public class Timestamp implements Comparable<Timestamp> {
         }
         return hour >= MIN_HOUR && hour <= MAX_HOUR
                 && minute >= MIN_MINUTE && minute <= MAX_MINUTE;
+    }
+
+    /**
+     * Returns this timestamp as epoch time: the number of seconds from
+     * midnight on January 1, 1970 to this date and time. A timestamp
+     * before the epoch gives a negative number. The date and time are
+     * read in the time zone of the computer running the system, and
+     * this timestamp should be valid.
+     *
+     * @return the number of seconds between the epoch and this timestamp
+     */
+    public long epochSeconds() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(date.getYear(),
+                date.getMonth() - CALENDAR_MONTH_OFFSET, date.getDay(),
+                hour, minute);
+        return calendar.getTimeInMillis() / MILLIS_PER_SECOND;
     }
 
     /**
